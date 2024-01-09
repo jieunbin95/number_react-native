@@ -1,4 +1,12 @@
-import { TextInput, View, StyleSheet, Alert } from "react-native";
+import {
+  useWindowDimensions,
+  TextInput,
+  View,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  ScrollView,
+} from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import { useState } from "react";
 import Colors from "../constants/colors";
@@ -8,6 +16,9 @@ import InstructionText from "../components/ui/InstructionText";
 
 function StartGameScreen({ onPickNumber }) {
   const [enterNumber, setEnterNumber] = useState("");
+
+  const { width, height } = useWindowDimensions();
+  // 기기의 치수를 재는 훅
 
   function numberInputHandler(event) {
     setEnterNumber(event);
@@ -38,39 +49,58 @@ function StartGameScreen({ onPickNumber }) {
     onPickNumber(choseNumber);
   }
 
+  const marginTopDistance = height < 380 ? 30 : 100;
+
   return (
-    <View style={styles.rootContainer}>
-      <Title>Guess My Number</Title>
-      <Card>
-        <InstructionText>Enter a Number</InstructionText>
-        <TextInput
-          style={styles.numberInput}
-          maxLength={2}
-          keyboardType="number-pad"
-          onChangeText={numberInputHandler}
-          value={enterNumber}
-        />
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPressBtn={resetInputHandler}>Reset</PrimaryButton>
-          </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPressBtn={confirmInputHandler}>
-              Confirm
-            </PrimaryButton>
-          </View>
+    <ScrollView style={styles.screen}>
+      <KeyboardAvoidingView behavior="position" style={styles.screen}>
+        {/* 가로모드일 경우 키보드 부분을 개선(ios) KeyboardAvoidingView+ScrollView사용*/}
+        <View style={[styles.rootContainer, { marginTop: marginTopDistance }]}>
+          <Title>Guess My Number</Title>
+          <Card>
+            <InstructionText>Enter a Number</InstructionText>
+            <TextInput
+              style={styles.numberInput}
+              maxLength={2}
+              keyboardType="number-pad"
+              onChangeText={numberInputHandler}
+              value={enterNumber}
+            />
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPressBtn={resetInputHandler}>
+                  Reset
+                </PrimaryButton>
+              </View>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPressBtn={confirmInputHandler}>
+                  Confirm
+                </PrimaryButton>
+              </View>
+            </View>
+          </Card>
         </View>
-      </Card>
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
 export default StartGameScreen;
 
+//const deviceHeight = Dimensions.get("window").height;
+//dimensions의 경우 한번 실행된 후 세로모드로 바뀔 경우 다시 랜더링 되지 않는다.
+//따라서 상황에 맞게 스타일을 줄 경우 해당 코드를 컴포넌트 함수로 옮겨 사용해야 한다
+// 기기의 방향이나 크기가 변경될 때 반응해야 하는 코드는 모두 컴포넌트 함수로 이동
+// -->useWindowDimensions 사용
+
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
+
   rootContainer: {
     flex: 1,
-    marginTop: 100,
+    //marginTop: deviceHeight < 400 ? 30 : 100,
     alignItems: "center",
   },
 

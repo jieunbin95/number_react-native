@@ -11,6 +11,7 @@ import { useFonts } from "expo-font";
 // expo install expo-font
 import AppLoading from "expo-app-loading";
 //expo install expo-app-loading
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
@@ -60,22 +61,25 @@ export default function App() {
   }
 
   return (
-    <LinearGradient
-      colors={[Colors.primary600, Colors.accent500]}
-      // 여러 색상을 배열을 통해 추가할 수 있다
-      style={styles.rootScreen}
-    >
-      <ImageBackground
-        resizeMode="cover"
-        imageStyle={styles.backgroundImage}
-        // 이미지의 스타일을 추가하고자 할 경우 사용
-        source={require("./assets/images/background.png")}
+    <>
+      <StatusBar style="light" />
+      <LinearGradient
+        colors={[Colors.primary600, Colors.accent500]}
+        // 여러 색상을 배열을 통해 추가할 수 있다
         style={styles.rootScreen}
       >
-        <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
-        {/* 안전 영역 경계 내에서 콘텐츠를 렌더링하는 것 */}
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          resizeMode="cover"
+          imageStyle={styles.backgroundImage}
+          // 이미지의 스타일을 추가하고자 할 경우 사용
+          source={require("./assets/images/background.png")}
+          style={styles.rootScreen}
+        >
+          <SafeAreaView style={styles.rootScreen}>{screen}</SafeAreaView>
+          {/* 안전 영역 경계 내에서 콘텐츠를 렌더링하는 것 */}
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 

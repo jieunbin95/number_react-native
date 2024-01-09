@@ -1,4 +1,5 @@
-import { Text, StyleSheet } from "react-native";
+import { Text, StyleSheet, Platform } from "react-native";
+// 디바이스마다 다른 스타일을 적용하고자 할 때 PlatformAPI를 사용
 
 function Title({ children }) {
   return <Text style={styles.title}>{children}</Text>;
@@ -12,8 +13,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: "white",
     textAlign: "center",
+    //borderWidth: Platform.OS === "android" ? 2 : 0,
+    //borderWidth: Platform.select({ ios: 0, android: 2 }),
     borderWidth: 2,
     borderColor: "white",
     padding: 12,
+    maxWidth: "80%",
+    width: 300,
   },
 });
